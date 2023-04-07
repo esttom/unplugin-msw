@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "nodemon -w '../src/**/*.ts' -e .ts -x vite",
+    "build": "vite build",
+    "serve": "nodemon -w '../src/**/*.ts' -e .ts -x vite preview"
+  },
+  "msw": {
+    "workerDirectory": "public"
+  },
+  "devDependencies": {
+    "vite": "^4.0.0",
+    "vite-plugin-inspect": "^0.7.10"
+  }
+}
