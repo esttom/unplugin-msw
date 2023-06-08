@@ -1,4 +1,8 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
 importers:
 
@@ -8,7 +12,7 @@ importers:
         specifier: ^1.1.0
         version: registry.npmjs.org/msw@1.1.0(typescript@4.9.4)
       unplugin:
-        specifier: ^1.0.1
+        specifier: ^1.0.0
         version: registry.npmjs.org/unplugin@1.0.1
     devDependencies:
       '@antfu/eslint-config':

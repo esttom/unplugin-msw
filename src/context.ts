@@ -8,6 +8,14 @@ export function createMswContext(options: Options | undefined) {
 
   async function generateWorker() {
     const code = new Code()
+    if (!workerEnabled) {
+      code.addExport({
+        local: 'worker',
+        value: 'undefined',
+      })
+      return code.generateCode()
+    }
+
     code.addImport({
       from: 'msw',
       imported: ['setupWorker'],
@@ -17,19 +25,10 @@ export function createMswContext(options: Options | undefined) {
       imported: [],
       local: 'handlers',
     })
-
-    if (workerEnabled) {
-      code.addExport({
-        local: 'worker',
-        value: `setupWorker(...${filterHandler('worker')})`,
-      })
-    }
-    else {
-      code.addExport({
-        local: 'worker',
-        value: 'undefined',
-      })
-    }
+    code.addExport({
+      local: 'worker',
+      value: `setupWorker(...${filterHandler('worker')})`,
+    })
 
     return code.generateCode()
   }
