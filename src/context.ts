@@ -1,4 +1,5 @@
 import path from 'node:path'
+import process from 'node:process'
 import type { MockType, Options } from './types'
 import { Code } from './code'
 
@@ -17,7 +18,7 @@ export function createMswContext(options: Options | undefined) {
     }
 
     code.addImport({
-      from: 'msw',
+      from: 'msw/browser',
       imported: ['setupWorker'],
     })
     code.addImport({

@@ -2,6 +2,11 @@
 
 `unplugin-msw` is a utility plugin that simplifies [msw](https://mswjs.io/) setup and commonizes "worker" and "server" mocks.
 
+| msw | unplugin-msw |
+| -- | -- |
+| 1.x | 0.3.0 |
+| 2.x | >= 0.4.0 |
+
 ## Feature
 - msw worker and server creation can be simplified
 - mocks can be easily shared and switched between worker and server
@@ -12,8 +17,7 @@
 npm i -D unplugin-msw
 ```
 
-<details>
-<summary>Vite</summary><br>
+### Vite
 
 ```ts
 // vite.config.ts
@@ -34,8 +38,6 @@ export default defineConfig({
 
 Example: [`playground/`](./playground/)
 
-<br></details>
-
 WIP: esbuild, rollup, webpack...
 
 ## Setup
@@ -48,40 +50,31 @@ Two types of definitions are available: the normal msw handler definition and an
 The normal definition is common to both servers and workers, while the extended definition allows the choice of server or worker.
 
 ```ts
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import type { UnpluginMswHandlers } from 'unplugin-msw/types'
 
 export default [
   // mws definition, use server and worker
-  rest.get('https://my-handle-url', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        key: 'value',
-      }),
-    )
+  http.get('https://my-handle-url', () => {
+    return HttpResponse.json({
+      key: 'value',
+    })
   }),
   // use worker only
   {
-    handler: rest.get('https://worker-only', (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
-          key: 'value',
-        }),
-      )
+    handler: http.get('https://worker-only', () => {
+      return HttpResponse.json({
+        key: 'value',
+      })
     }),
     type: 'worker',
   },
   // use server only
   {
-    handler: rest.get('https://server-only', (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
-          key: 'value',
-        }),
-      )
+    handler: http.get('https://server-only', () => {
+      return HttpResponse.json({
+        key: 'value',
+      })
     }),
     type: 'server',
   },

@@ -1,34 +1,25 @@
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import type { UnpluginMswHandlers } from './../../src/types'
 
 export default [
-  rest.get('https://my-handle-url', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        key: 'value',
-      }),
-    )
+  http.get('https://my-handle-url', () => {
+    return HttpResponse.json({
+      key: 'value',
+    })
   }),
   {
-    handler: rest.get('https://worker-only', (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
-          key: 'value',
-        }),
-      )
+    handler: http.get('https://worker-only', () => {
+      return HttpResponse.json({
+        key: 'value',
+      })
     }),
     type: 'worker',
   },
   {
-    handler: rest.get('https://server-only', (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
-          key: 'value',
-        }),
-      )
+    handler: http.get('https://server-only', () => {
+      return HttpResponse.json({
+        key: 'value',
+      })
     }),
     type: 'server',
   },
