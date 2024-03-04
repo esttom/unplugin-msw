@@ -49,8 +49,8 @@ install [msw](https://mswjs.io/docs/getting-started/install)
 Two types of definitions are available: the normal msw handler definition and an extended definition.
 The normal definition is common to both servers and workers, while the extended definition allows the choice of server or worker.
 
-[!WARNING]
-Creates a handler that combines all files under the specified directory. Each handler should be exported by default.
+> [!WARNING]
+> Creates a handler that combines all files under the specified directory. Each handler should be exported by default.
 
 ```ts
 import { HttpResponse, http } from 'msw'
