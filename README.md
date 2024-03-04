@@ -29,7 +29,7 @@ export default defineConfig({
     // or
     MswPlugin({
       // default
-      mockPath: 'mock/handler', // handler definition path
+      mockDir: 'mock/handlers', // handler definition directory
       workerEnabled: process.env.NODE_ENV === 'development', // worker startup condition
     })
   ],
@@ -46,8 +46,11 @@ install [msw](https://mswjs.io/docs/getting-started/install)
 
 ### msw handler definition
 
-Two types of definitions are available: the normal msw handler definition and an extended definition. 
+Two types of definitions are available: the normal msw handler definition and an extended definition.
 The normal definition is common to both servers and workers, while the extended definition allows the choice of server or worker.
+
+[!WARNING]
+Creates a handler that combines all files under the specified directory. Each handler should be exported by default.
 
 ```ts
 import { HttpResponse, http } from 'msw'
@@ -91,6 +94,7 @@ setup [msw worker](https://mswjs.io/docs/getting-started/integrate/browser)
 
 ```ts
 import { worker } from 'unplugin-msw/worker'
+
 // worker is undefined when 'workerEnabled' === false
 worker?.start()
 ```

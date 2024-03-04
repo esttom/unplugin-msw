@@ -1,5 +1,5 @@
 import { HttpResponse, http } from 'msw'
-import type { UnpluginMswHandlers } from './../../src/types'
+import type { UnpluginMswHandlers } from './../../../src/types'
 
 export default [
   http.get('https://my-handle-url', () => {
