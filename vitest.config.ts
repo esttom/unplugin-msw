@@ -5,7 +5,7 @@ export default defineConfig(() => {
   return {
     plugins: [
       MswPlugin.vite({
-        mockPath: 'playground/src/handler',
+        mockDir: 'playground/mock/handlers',
       }),
     ],
   }

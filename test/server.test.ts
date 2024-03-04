@@ -23,4 +23,9 @@ describe('server', () => {
   it('worker only URL', async () => {
     expect(() => fetch('https://worker-only')).rejects.toThrowError()
   })
+
+  it('another handler file URL', async () => {
+    const data = await fetch('https://ext-handler')
+    expect(data.status).toBe(200)
+  })
 })

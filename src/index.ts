@@ -1,5 +1,5 @@
 import { createUnplugin } from 'unplugin'
-import { createMswContext } from './context'
+import { MswContext } from './context'
 import type { Options } from './types'
 
 const virtualPrefix = 'virtual:'
@@ -17,7 +17,7 @@ function unresolveVirtualId(virtualId: string) {
 }
 
 export default createUnplugin<Options | undefined>((options) => {
-  const ctx = createMswContext(options)
+  const ctx = new MswContext(options)
 
   return {
     name: 'unplugin-msw',

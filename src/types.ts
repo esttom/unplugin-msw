@@ -1,7 +1,7 @@
 import type { RequestHandler } from 'msw'
 
 export interface Options {
-  mockPath?: string
+  mockDir?: string
   workerEnabled?: boolean
 }
 

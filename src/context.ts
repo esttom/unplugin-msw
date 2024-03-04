@@ -1,15 +1,21 @@
 import path from 'node:path'
 import process from 'node:process'
+import { scanDirExports } from 'unimport'
 import type { MockType, Options } from './types'
 import { Code } from './code'
 
-export function createMswContext(options: Options | undefined) {
-  const mockPath = path.join(process.cwd(), options?.mockPath ?? 'mock/handler')
-  const workerEnabled = options?.workerEnabled !== undefined ? options.workerEnabled : process.env.NODE_ENV === 'development'
+export class MswContext {
+  private mockDir: string
+  private workerEnabled: boolean
 
-  async function generateWorker() {
-    const code = new Code()
-    if (!workerEnabled) {
+  constructor(options: Options | undefined) {
+    this.mockDir = options?.mockDir ?? 'mock/handlers'
+    this.workerEnabled = options?.workerEnabled !== undefined ? options.workerEnabled : process.env.NODE_ENV === 'development'
+  }
+
+  async generateWorker() {
+    if (!this.workerEnabled) {
+      const code = new Code()
       code.addExport({
         local: 'worker',
         value: 'undefined',
@@ -17,33 +23,23 @@ export function createMswContext(options: Options | undefined) {
       return code.generateCode()
     }
 
+    const code = await this.createDefaultHandlerCode()
     code.addImport({
       from: 'msw/browser',
       imported: ['setupWorker'],
-    })
-    code.addImport({
-      from: mockPath.replace(/\\/g, '\\\\'),
-      imported: [],
-      local: 'handlers',
     })
     code.addExport({
       local: 'worker',
       value: `setupWorker(...${filterHandler('worker')})`,
     })
-
     return code.generateCode()
   }
 
-  async function generateServer() {
-    const code = new Code()
+  async generateServer() {
+    const code = await this.createDefaultHandlerCode()
     code.addImport({
       from: 'msw/node',
       imported: ['setupServer'],
-    })
-    code.addImport({
-      from: mockPath.replace(/\\/g, '\\\\'),
-      imported: [],
-      local: 'handlers',
     })
     code.addExport({
       local: 'server',
@@ -52,8 +48,8 @@ export function createMswContext(options: Options | undefined) {
     return code.generateCode()
   }
 
-  async function generateVitestServer() {
-    const code = new Code()
+  async generateVitestServer() {
+    const code = await this.createDefaultHandlerCode()
     code.addImport({
       from: 'msw/node',
       imported: ['setupServer'],
@@ -61,11 +57,6 @@ export function createMswContext(options: Options | undefined) {
     code.addImport({
       from: 'vitest',
       imported: ['beforeAll', 'afterAll', 'afterEach'],
-    })
-    code.addImport({
-      from: mockPath.replace(/\\/g, '\\\\'),
-      imported: [],
-      local: 'handlers',
     })
     code.addExport({
       local: 'server',
@@ -82,10 +73,20 @@ export function createMswContext(options: Options | undefined) {
     return code.generateCode()
   }
 
-  return {
-    generateWorker,
-    generateServer,
-    generateVitestServer,
+  private async createDefaultHandlerCode() {
+    const code = new Code()
+    const handlers = await this.searchGlobHandler(this.mockDir)
+    for (const handler of handlers) {
+      code.addHandlerImport({
+        from: handler.replace(/\\/g, '\\\\'),
+      })
+    }
+    return code
+  }
+
+  private async searchGlobHandler(mockDir: string) {
+    const dirExports = await scanDirExports(path.join(process.cwd(), mockDir))
+    return dirExports.filter(d => d.name === 'default').map(d => d.from)
   }
 }
 

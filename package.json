@@ -1,8 +1,8 @@
 {
   "name": "unplugin-msw",
   "type": "module",
-  "version": "0.4.0",
-  "packageManager": "pnpm@8.0.0",
+  "version": "0.6.0",
+  "packageManager": "pnpm@8.14.0",
   "description": "utility unplugin for msw",
   "license": "MIT",
   "homepage": "https://github.com/esttom/unplugin-msw#readme",
@@ -92,6 +92,7 @@
   },
   "dependencies": {
     "msw": "^2.0.8",
+    "unimport": "^3.7.1",
     "unplugin": "^1.5.0"
   },
   "devDependencies": {
@@ -107,8 +108,9 @@
     "rollup": "^3.28.1",
     "tsup": "^7.2.0",
     "typescript": "^5.1.6",
-    "vite": "^4.4.9",
-    "vitest": "^0.34.2",
+    "vite": "^5.1.1",
+    "vite-plugin-inspect": "^0.8.3",
+    "vitest": "^1.1.2",
     "webpack": "^5.88.2"
   }
 }
