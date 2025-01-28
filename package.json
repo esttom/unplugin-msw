@@ -90,8 +90,10 @@
     "start": "esno src/index.ts",
     "test": "vitest"
   },
+  "peerDependencies": {
+    "msw": "^2.0.8"
+  },
   "dependencies": {
-    "msw": "^2.0.8",
     "unimport": "^3.7.1",
     "unplugin": "^1.5.0"
   },
