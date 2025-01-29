@@ -1,5 +1,5 @@
 declare module 'unplugin-msw/worker' {
-  import type { SetupWorker } from 'msw'
+  import type { SetupWorker } from 'msw/browser'
   export const worker: SetupWorker | undefined
 }
 
