@@ -1,7 +1,7 @@
 {
   "name": "unplugin-msw",
   "type": "module",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "packageManager": "pnpm@8.14.0",
   "description": "utility unplugin for msw",
   "license": "MIT",
